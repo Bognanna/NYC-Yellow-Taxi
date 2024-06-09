@@ -76,8 +76,8 @@ In last unused terminal run script 04.
 ./04_skrypt_uruchamiajacy_program_przetwarzania_strumieni_danych.sh
 ```
 
-## Checking taxiagg status
-In order to schow taxiagg table run script 06.
+## Check taxiagg status
+In order to show taxiagg table run script 06.
 ```
 ./06_skrypt_odczytujacy_wyniki_z_miejsca_docelowego.sh
 ```
