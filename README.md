@@ -38,9 +38,9 @@ Files and directories shoud be placed as following:
 -- 05_2_skrypt_uruchamiajacy_skrypt_przygotowujacy_miejsce_docelowe.sh\
 -- 06_skrypt_odczytujacy_wyniki_z_miejsca_docelowego.sh\
 -- KafkaProducer.jar\
--- *datasets*\
+-- **datasets**\
 ----- taxi_zone_lookup.csv\
------ *yellow_tripdata_result*\
+----- **yellow_tripdata_result**\
 -------- part-00000-....csv\
 -------- ...\
 
