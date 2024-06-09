@@ -29,20 +29,20 @@ hadoop fs -copyToLocal gs://${BUCKET_NAME}${PATH_TO_DIR}
 ### Directory tree structure
 Files and directories shoud be placed as following:
 
--- 00_skrypt_przygotowujacy_pozostale_skrypty.sh
--- 01_skrypt_tworzacy_zrodlowe_tematy_kafki.sh
--- 02_skrypt_uruchamiajacy_kafkaproducer.sh
--- 03_program_przetwarzania_strumieni_danych.py
--- 04_skrypt_uruchamiajacy_program_przetwarzania_strumieni_danych.sh
--- 05_1_skrypt_przygotowujacy_miejsce_docelowe.sql
--- 05_2_skrypt_uruchamiajacy_skrypt_przygotowujacy_miejsce_docelowe.sh
--- 06_skrypt_odczytujacy_wyniki_z_miejsca_docelowego.sh
--- KafkaProducer.jar
--- *datasets*
------ taxi_zone_lookup.csv
------ *yellow_tripdata_result*
--------- part-00000-....csv
--------- ...
+-- 00_skrypt_przygotowujacy_pozostale_skrypty.sh\
+-- 01_skrypt_tworzacy_zrodlowe_tematy_kafki.sh\
+-- 02_skrypt_uruchamiajacy_kafkaproducer.sh\
+-- 03_program_przetwarzania_strumieni_danych.py\
+-- 04_skrypt_uruchamiajacy_program_przetwarzania_strumieni_danych.sh\
+-- 05_1_skrypt_przygotowujacy_miejsce_docelowe.sql\
+-- 05_2_skrypt_uruchamiajacy_skrypt_przygotowujacy_miejsce_docelowe.sh\
+-- 06_skrypt_odczytujacy_wyniki_z_miejsca_docelowego.sh\
+-- KafkaProducer.jar\
+-- *datasets*\
+----- taxi_zone_lookup.csv\
+----- *yellow_tripdata_result*\
+-------- part-00000-....csv\
+-------- ...\
 
 ### Prepare scripts
 Run following commands to give executable permissions to 00_skrypt_przygotowujacy_pozostale_skrypty.sh file and to replace CR characters (windows) with nothing (unix) in order to Bash be able to read and execute the file.
