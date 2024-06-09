@@ -10,7 +10,7 @@ from pyspark.sql.streaming import StreamingQueryManager
 
 
 
-ZONE_PATH = "gs://pbd-03-24-bk/project/datasets/taxi_zone_lookup.csv"
+#ZONE_PATH = "gs://pbd-03-24-bk/project/datasets/taxi_zone_lookup.csv"
 HOST_NAME = socket.gethostname()
 SCALA_VERSION = '2.12'
 SPARK_VERSION = '3.3.2'
@@ -142,7 +142,7 @@ if __name__ == "__main__":
 
 	spark = init_spark_session()
 
-	zoneDF = create_taxi_zones_df(ZONE_PATH)
+	#zoneDF = create_taxi_zones_df(ZONE_PATH)
 	taxiDF = read_taxi_data_stream()
 
 	resultDF = create_resultDF(taxiDF)
