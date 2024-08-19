@@ -21,16 +21,7 @@ packages = [f'org.apache.spark:spark-sql-kafka-0-10_{SCALA_VERSION}:{SPARK_VERSI
 def parse_args():
     
     parser = argparse.ArgumentParser(
-        description = "Using Spark Structured Streaming deal with stream of NYC Yellow Taxi data")
-
-    # parser.add_argument("--opens_index", type=str, default="product-hpc_eagle*", required=False,
-    #         help = "OpenSearch index prefix.")
-    # parser.add_argument("--date_since", type=str, default="now-1d/d", required=False,
-    #         help = "The oldest date from which logs are checked.")
-    # parser.add_argument("--date_to", type=str, default="now", required=False,
-    #         help = "The newset date to which logs are checked.")
-    # parser.add_argument('-sync', action='store_true', 
-    #         help = "Flag which indicates wether duplicated entries in OpenSearch should be deleted.") 
+        description = "Using Spark Structured Streaming deal with stream of NYC Yellow Taxi data") 
     
     args = parser.parse_args()
 
@@ -91,12 +82,14 @@ def read_taxi_data_stream(port = '9092', topic_name = "NYC-taxi-topic"):
 	return taxiDF
 
 
-def create_resultDF(dataDF):
+def create_resultDF(dataDF, zoneDF):
 	count_cond = lambda cond: sum(when(cond, 1).otherwise(0))
 	sum_cond = lambda cond, val: sum(when(cond, val).otherwise(0))
 
-	resultDF = dataDF.groupBy(
-			[date_format("dt", 'yyyy-MM-dd').alias("date"), col("locationID").alias("borough")]
+	resultDF = dataDF.join(
+			zoneDF, dataDF.locationID == zoneDF.locationID, 'left'
+		).groupBy(
+			[date_format("dt", 'yyyy-MM-dd').alias("date"), col("Borough").alias("borough")]
 		).agg(
 			count_cond(col("start_stop") == 0).alias("N_departures"),
 			count_cond(col("start_stop") == 1).alias("N_arrivals"),
@@ -142,10 +135,10 @@ if __name__ == "__main__":
 
 	spark = init_spark_session()
 
-	#zoneDF = create_taxi_zones_df(ZONE_PATH)
+	zoneDF = create_taxi_zones_df(ZONE_PATH)
 	taxiDF = read_taxi_data_stream()
 
-	resultDF = create_resultDF(taxiDF)
+	resultDF = create_resultDF(taxiDF, zoneDF)
 
 	#direct_result_to_console(resultDF)
 
