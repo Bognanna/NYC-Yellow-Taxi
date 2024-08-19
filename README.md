@@ -97,14 +97,14 @@ KafkaProducer looks for files in `inputDir` and post their content line by line 
 Program reads lines from kafka topic and converts them from csv format to dataframe. It aggregates them and post them to postgresql table.
 
 **TODO**
-- [] Use data from static table `taxi_zones_lookup` to make aggregations on borough
+- [x] Use data from static table `taxi_zones_lookup` to make aggregations on borough
 - [] Add windows and watermarks
 - [] Chose proper trigger
 - [] Data check and outlier filter
 
 Read data stream:
 ```python
-taxiDS = spark.readStream \
+	taxiDS = spark.readStream \
 		.format("kafka") \
 		.option("kafka.bootstrap.servers", f"{HOST_NAME}:{port}")\
 		.option("subscribe", topic_name) \
@@ -113,7 +113,7 @@ taxiDS = spark.readStream \
 
 Convert csv format to dataframe:
 ```python
-csv_schema = "tripID INT, start_stop INT, timestamp STRING, locationID INT, passenger_count INT, trip_distance FLOAT, payment_type INT, amount FLOAT, VendorID INT"
+	csv_schema = "tripID INT, start_stop INT, timestamp STRING, locationID INT, passenger_count INT, trip_distance FLOAT, payment_type INT, amount FLOAT, VendorID INT"
 
 	dataDF = taxi_csv.select(
 			from_csv(taxi_csv.value, csv_schema).alias("val")
@@ -130,13 +130,15 @@ csv_schema = "tripID INT, start_stop INT, timestamp STRING, locationID INT, pass
 		)
 ```
 
-Aggregate data - without windows it doesn't make much sense
+Aggregate data
 ```python
-count_cond = lambda cond: sum(when(cond, 1).otherwise(0))
+	count_cond = lambda cond: sum(when(cond, 1).otherwise(0))
 	sum_cond = lambda cond, val: sum(when(cond, val).otherwise(0))
 
-	resultDF = dataDF.groupBy(
-			[date_format("dt", 'yyyy-MM-dd').alias("date"), col("locationID").alias("borough")]
+	resultDF = dataDF.join(
+			zoneDF, dataDF.locationID == zoneDF.locationID, 'left'
+		).groupBy(
+			[date_format("dt", 'yyyy-MM-dd').alias("date"), col("Borough").alias("borough")]
 		).agg(
 			count_cond(col("start_stop") == 0).alias("N_departures"),
 			count_cond(col("start_stop") == 1).alias("N_arrivals"),
