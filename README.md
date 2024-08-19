@@ -1,5 +1,7 @@
 # NYC-Yellow-Taxi
-This is a project for "Stream Processing in Big Data Systems" course. It uses Kafka to create topics, Spark Structured Streaming to process datastream and direct results to Postgresql database. The project is under active developement. 
+This is a project for "Stream Processing in Big Data Systems" course. It uses Kafka to create topics, Spark Structured Streaming to process datastream and direct results to Postgresql database. The project is under active developement.
+
+![Architecture](https://github.com/Bognanna/NYC-Yellow-Taxi/blob/main/img/architecture.PNG)
 
 ## Executing project
 
